@@ -1,4 +1,4 @@
-def create_board():
+def create_empty_board():
     board = {
         'tL': ' ', 'tM': ' ', 'tR': ' ',
         'mL': ' ', 'mM': ' ', 'mR': ' ',
