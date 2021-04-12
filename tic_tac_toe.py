@@ -14,7 +14,8 @@ def create_empty_board():
 
 
 def print_board(board):
-    pass
+    for line in board:
+        print(line)
 
 
 if __name__ == '__main__':
