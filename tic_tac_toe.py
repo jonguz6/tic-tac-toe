@@ -13,5 +13,10 @@ def create_empty_board():
     ]
 
 
-if __name__ == '__main__':
+def print_board(board):
     pass
+
+
+if __name__ == '__main__':
+    game_board = create_empty_board()
+    print_board(game_board)
