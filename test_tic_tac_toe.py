@@ -60,4 +60,4 @@ class TestTicTacToe(TestCase):
                 pass
             value = f.getvalue()
         self.assertEqual(full_board, value.split('\n')[54:59])
-        self.assertEqual("There is no winner!", value.split('\n')[60])
+        self.assertEqual("There is no winner!", value.split('\n')[59])
