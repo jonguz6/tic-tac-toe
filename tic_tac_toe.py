@@ -32,6 +32,13 @@ def detect_board_full(board):
     return False, None
 
 
+def check_if_move_invalid(move, board):
+    if board[move] != ' ':
+        return True, 'Invalid move!'
+    else:
+        return False, None
+
+
 def game_loop(board):
     game_board = board.copy()
     user = 'X'
@@ -46,10 +53,12 @@ def game_loop(board):
 
         move = input("What is your move? (tL, tM, tR, mL, mM, mR, bL, bM, bR)\n")
 
-        if game_board[move] != ' ':
-            print('Invalid move!')
-        else:
-            game_board[move] = user
+        invalid_move = check_if_move_invalid(move, game_board)
+        if invalid_move[0]:
+            print(invalid_move[1])
+            continue
+
+        game_board[move] = user
 
         user = swap_users(user)
 
