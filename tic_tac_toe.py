@@ -33,10 +33,15 @@ def detect_board_full(board):
 
 
 def check_if_move_invalid(move, board):
-    if board[move] != ' ':
-        return True, 'Invalid move! This place is taken, try another one.'
+    try:
+        board[move]
+    except KeyError:
+        return True, 'Invalid move! Please use one of the values hinted below.'
     else:
-        return False, None
+        if board[move] != ' ':
+            return True, 'Invalid move! This place is taken, try another one.'
+        else:
+            return False, None
 
 
 def game_loop(board):
