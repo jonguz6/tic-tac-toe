@@ -61,3 +61,14 @@ class TestTicTacToe(TestCase):
             value = f.getvalue()
         self.assertEqual(full_board, value.split('\n')[54:59])
         self.assertEqual("There is no winner!", value.split('\n')[59])
+
+    @patch('sys.stdin', io.StringIO('tL\ntL'))
+    def test_game_loop_detects_move_on_occupied_cell(self):
+        board = self.board.copy()
+        with patch('sys.stdout', new_callable=io.StringIO) as f:
+            try:
+                game_loop(board)
+            except EOFError:
+                pass
+            value = f.getvalue()
+        self.assertEqual('Invalid move!', value.split('\n')[-8])
