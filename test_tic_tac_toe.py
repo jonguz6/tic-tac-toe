@@ -93,7 +93,29 @@ class TestTicTacToe(TestCase):
             except EOFError:
                 pass
             value = f.getvalue()
-        self.assertEqual('Congratulations! The winner is X.', value.split('\n')[-2])
+        self.assertEqual('Congratulations! The winner is X!', value.split('\n')[-2])
+
+    @patch('sys.stdin', io.StringIO('mM\ntR\nmR\nmL\nbM\ntM\ntL\nbL\nbR'))
+    def test_game_loop_detects_winner_second_scenario(self):
+        board = self.board.copy()
+        with patch('sys.stdout', new_callable=io.StringIO) as f:
+            try:
+                game_loop(board)
+            except EOFError:
+                pass
+            value = f.getvalue()
+        self.assertEqual('Congratulations! The winner is X!', value.split('\n')[-2])
+
+    @patch('sys.stdin', io.StringIO('mL\nmM\nbM\nbL\ntR\nbR\ntM\ntL'))
+    def test_game_loop_detects_winner_third_scenario(self):
+        board = self.board.copy()
+        with patch('sys.stdout', new_callable=io.StringIO) as f:
+            try:
+                game_loop(board)
+            except EOFError:
+                pass
+            value = f.getvalue()
+        self.assertEqual('Congratulations! The winner is O!', value.split('\n')[-2])
 
 
 class FunctionsTest(TestCase):
