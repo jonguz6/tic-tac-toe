@@ -77,14 +77,17 @@ def check_for_winner(board):
     return False, None
 
 
+def check_for_numpad():
+    numpad = input("Do you want to play with a numpad/numerical keys? (Y/n)")
+    if numpad.lower() == 'y' or numpad == '':
+        return True
+    return False
+
+
 def game_loop(board):
     game_board = board.copy()
     user = 'X'
-    numpad = input("Do you want to play with a numpad/numerical keys? (Y/n)")
-    if numpad.lower() == 'y' or numpad == '':
-        numpad = True
-    else:
-        numpad = True
+    numpad = check_for_numpad()
 
     while True:
         generated_board = generate_board(game_board)
