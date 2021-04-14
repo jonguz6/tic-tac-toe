@@ -45,7 +45,11 @@ def game_loop(board):
             break
 
         move = input("What is your move? (tL, tM, tR, mL, mM, mR, bL, bM, bR)\n")
-        game_board[move] = user
+
+        if game_board[move] != ' ':
+            print('Invalid move!')
+        else:
+            game_board[move] = user
 
         user = swap_users(user)
 
