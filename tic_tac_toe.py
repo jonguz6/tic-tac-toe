@@ -51,6 +51,10 @@ def game_loop(board):
         generated_board = generate_board(game_board)
         print_board(generated_board)
 
+        if game_board['tL'] == game_board['tM'] == game_board['tR'] != ' ':
+            print(f"Congratulations! The winner is {game_board['tL']}.")
+            break
+
         board_full = detect_board_full(game_board)
         if board_full[0]:
             print(board_full[1])

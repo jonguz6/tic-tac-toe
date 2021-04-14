@@ -93,7 +93,7 @@ class TestTicTacToe(TestCase):
             except EOFError:
                 pass
             value = f.getvalue()
-        self.assertEqual('Congratulations! The winner is X.', value.split('\n')[-1])
+        self.assertEqual('Congratulations! The winner is X.', value.split('\n')[-2])
 
 
 class FunctionsTest(TestCase):
