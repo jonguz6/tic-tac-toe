@@ -2,7 +2,7 @@ import io
 from unittest import TestCase
 from unittest.mock import patch
 
-from tic_tac_toe import BOARD, create_empty_board, print_board, game_loop
+from tic_tac_toe import BOARD, generate_board, print_board, game_loop
 
 
 class TestTicTacToe(TestCase):
@@ -18,7 +18,7 @@ class TestTicTacToe(TestCase):
         pass
 
     def test_create_empty_board(self):
-        self.assertEqual(self.generated_board, list(create_empty_board(self.board)))
+        self.assertEqual(self.generated_board, list(generate_board(self.board)))
 
     @patch('sys.stdout', new_callable=io.StringIO)
     def test_print_empty_board(self, mock_out):
@@ -36,3 +36,15 @@ class TestTicTacToe(TestCase):
                 pass
             value = f.getvalue()
         self.assertEqual(one_input_board, value.split('\n')[6:11])
+
+    @patch('sys.stdin', io.StringIO('tR\ntL'))
+    def test_game_loop_takes_two_inputs(self):
+        board = self.board.copy()
+        two_input_board = ['O| |X', '-+-+-', ' | | ', '-+-+-', ' | | ']
+        with patch('sys.stdout', new_callable=io.StringIO) as f:
+            try:
+                game_loop(board)
+            except EOFError:
+                pass
+            value = f.getvalue()
+        self.assertEqual(two_input_board, value.split('\n')[12:17])
