@@ -3,7 +3,8 @@ from unittest import TestCase
 from unittest.mock import patch
 
 from tic_tac_toe import BOARD, generate_board, print_board, game_loop, swap_users, check_if_move_invalid, \
-    detect_board_full, check_if_three_values_are_the_same, check_for_winner
+    detect_board_full, check_if_three_values_are_the_same, check_for_winner, check_for_numpad, \
+    translate_num_to_dict_key, NUMPAD
 
 
 class TestTicTacToe(TestCase):
@@ -146,6 +147,7 @@ class FunctionsTest(TestCase):
 
     def setUp(self) -> None:
         self.board = BOARD.copy()
+        self.NUMPAD = NUMPAD.copy()
 
     def test_swap_users_function_swaps_correctly(self):
         user = 'X'
@@ -246,5 +248,31 @@ class FunctionsTest(TestCase):
         self.assertTrue(check)
         self.assertEqual(winner, 'O')
 
+    def test_check_for_numpad_no_input(self):
+        result = check_for_numpad('')
+        self.assertTrue(result)
 
+    def test_check_for_numpad_lowercase_y(self):
+        result = check_for_numpad('y')
+        self.assertTrue(result)
+
+    def test_check_for_numpad_uppercase_Y(self):
+        result = check_for_numpad('Y')
+        self.assertTrue(result)
+
+    def test_check_for_numpad_lowercase_n(self):
+        result = check_for_numpad('n')
+        self.assertFalse(result)
+
+    def test_check_for_numpad_random_input(self):
+        result = check_for_numpad('gdasfgertsgh')
+        self.assertFalse(result)
+
+    def test_translate_num_to_dict_key_with_good_input(self):
+        result = translate_num_to_dict_key(9, self.NUMPAD)
+        self.assertEqual(result, 'tR')
+
+    def test_translate_num_to_dict_key_with_bad_input(self):
+        result = translate_num_to_dict_key('y', self.NUMPAD)
+        self.assertEqual(result, None)
 
