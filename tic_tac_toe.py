@@ -1,3 +1,5 @@
+import os
+
 BOARD = {
     'tL': ' ', 'tM': ' ', 'tR': ' ',
     'mL': ' ', 'mM': ' ', 'mR': ' ',
@@ -97,6 +99,10 @@ def translate_num_to_dict_key(number, trans_table=None):
     return result
 
 
+def clear():
+    print('\n' * 1000)
+
+
 def game_loop(board):
     game_board = board.copy()
     user = 'X'
@@ -104,6 +110,7 @@ def game_loop(board):
     numpad = check_for_numpad(numpad)
 
     while True:
+        clear()
         generated_board = generate_board(game_board)
         print_board(generated_board)
 
@@ -111,6 +118,7 @@ def game_loop(board):
         if winner:
             print(f'Congratulations! The winner is {winner}!')
             break
+
 
         board_full = detect_board_full(game_board)
         if board_full[0]:
