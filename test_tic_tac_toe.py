@@ -84,6 +84,17 @@ class TestTicTacToe(TestCase):
             value = f.getvalue()
         self.assertEqual('Invalid move! Please use one of the values hinted below.', value.split('\n')[-8])
 
+    @patch('sys.stdin', io.StringIO('tL\nbL\ntM\nbM\ntR'))
+    def test_game_loop_detects_winner(self):
+        board = self.board.copy()
+        with patch('sys.stdout', new_callable=io.StringIO) as f:
+            try:
+                game_loop(board)
+            except EOFError:
+                pass
+            value = f.getvalue()
+        self.assertEqual('Congratulations! The winner is X.', value.split('\n')[-1])
+
 
 class FunctionsTest(TestCase):
 
