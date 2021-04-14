@@ -3,7 +3,7 @@ from unittest import TestCase
 from unittest.mock import patch
 
 from tic_tac_toe import BOARD, generate_board, print_board, game_loop, swap_users, check_if_move_invalid, \
-    detect_board_full, check_if_three_values_are_the_same
+    detect_board_full, check_if_three_values_are_the_same, check_for_winner
 
 
 class TestTicTacToe(TestCase):
@@ -194,6 +194,33 @@ class FunctionsTest(TestCase):
     def test_check_if_three_values_are_the_same_with_all_empty(self):
         x, y, z = ' ', ' ', ' '
         self.assertFalse(check_if_three_values_are_the_same(x, y, z))
+
+    def test_check_for_winner_row_is_X(self):
+        board = self.board.copy()
+        board['tL'] = "X"
+        board['tM'] = "X"
+        board['tR'] = "X"
+        check, winner = check_for_winner(board)
+        self.assertTrue(check)
+        self.assertEqual(winner, 'X')
+
+    def test_check_for_winner_column_is_O(self):
+        board = self.board.copy()
+        board['tM'] = 'O'
+        board['mM'] = 'O'
+        board['bM'] = 'O'
+        check, winner = check_for_winner(board)
+        self.assertTrue(check)
+        self.assertEqual(winner, 'O')
+
+    def test_check_for_winner_diagonal_is_O(self):
+        board = self.board.copy()
+        board['bL'] = 'O'
+        board['mM'] = 'O'
+        board['tR'] = 'O'
+        check, winner = check_for_winner(board)
+        self.assertTrue(check)
+        self.assertEqual(winner, 'O')
 
 
 
