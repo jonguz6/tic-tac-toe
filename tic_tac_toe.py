@@ -44,6 +44,35 @@ def check_if_move_invalid(move, board):
             return False, None
 
 
+def check_if_three_values_are_the_same(x, y, z):
+    if x == y == z != ' ':
+        return True
+    return False
+
+
+def check_for_winner(board):
+    combinations = (
+        ('tL', 'tM', 'tR'),
+        ('tL', 'mM', 'bR'),
+        ('tL', 'mL', 'bL'),
+        ('tM', 'mM', 'bM'),
+        ('mL', 'mM', 'mR'),
+        ('tR', 'mR', 'bR'),
+        ('bL', 'bM', 'bR'),
+        ('bL', 'mM', 'tR')
+    )
+    for combination in combinations:
+        x = combination[0]
+        y = combination[1]
+        z = combination[2]
+
+        if check_if_three_values_are_the_same(board[x], board[y], board[z]):
+            print(combination)
+            return True, board[x]
+        continue
+    return False, None
+
+
 def game_loop(board):
     game_board = board.copy()
     user = 'X'
@@ -51,8 +80,9 @@ def game_loop(board):
         generated_board = generate_board(game_board)
         print_board(generated_board)
 
-        if game_board['tL'] == game_board['tM'] == game_board['tR'] != ' ':
-            print(f"Congratulations! The winner is {game_board['tL']}.")
+        check, winner = check_for_winner(game_board)
+        if winner:
+            print(f'Congratulations! The winner is {winner}!')
             break
 
         board_full = detect_board_full(game_board)
