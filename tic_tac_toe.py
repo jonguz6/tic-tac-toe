@@ -67,7 +67,6 @@ def check_for_winner(board):
         z = combination[2]
 
         if check_if_three_values_are_the_same(board[x], board[y], board[z]):
-            print(combination)
             return True, board[x]
         continue
     return False, None
