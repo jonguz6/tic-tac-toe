@@ -117,6 +117,18 @@ class TestTicTacToe(TestCase):
             value = f.getvalue()
         self.assertEqual('Congratulations! The winner is O!', value.split('\n')[-2])
 
+    @patch('sys.stdin', io.StringIO('y\n9'))
+    def test_game_loop_takes_input_with_numpad(self):
+        board = self.board.copy()
+        one_input_board = [' | |X', '-+-+-', ' | | ', '-+-+-', ' | | ']
+        with patch('sys.stdout', new_callable=io.StringIO) as f:
+            try:
+                game_loop(board)
+            except EOFError:
+                pass
+            value = f.getvalue()
+        self.assertEqual(one_input_board, value.split('\n')[6:11])
+
 
 class FunctionsTest(TestCase):
 
