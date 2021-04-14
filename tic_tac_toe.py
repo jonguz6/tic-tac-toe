@@ -20,12 +20,18 @@ def print_board(board):
 
 def game_loop(board):
     game_board = board.copy()
+    user = 'X'
     while True:
         generated_board = generate_board(game_board)
         print_board(generated_board)
 
         move = input("What is your move? (tL, tM, tR, mL, mM, mR, bL, bM, bR)\n")
-        game_board[move] = 'X'
+        game_board[move] = user
+
+        if user == 'X':
+            user = 'O'
+        else:
+            user = 'X'
 
 
 if __name__ == '__main__':
