@@ -48,3 +48,16 @@ class TestTicTacToe(TestCase):
                 pass
             value = f.getvalue()
         self.assertEqual(two_input_board, value.split('\n')[12:17])
+
+    @patch('sys.stdin', io.StringIO('tL\ntM\ntR\nmL\nmM\nmR\nbL\nbM\nbR'))
+    def test_game_loop_detects_boar_is_full(self):
+        board = self.board.copy()
+        full_board = ['X|O|X', '-+-+-', 'O|X|O', '-+-+-', 'X|O|X']
+        with patch('sys.stdout', new_callable=io.StringIO) as f:
+            try:
+                game_loop(board)
+            except EOFError:
+                pass
+            value = f.getvalue()
+        self.assertEqual(full_board, value.split('\n')[54:59])
+        self.assertEqual("There is no winner!", value.split('\n')[60])
