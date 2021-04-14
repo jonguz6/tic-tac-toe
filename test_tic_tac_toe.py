@@ -2,20 +2,20 @@ import io
 from unittest import TestCase
 from unittest.mock import patch
 
-from tic_tac_toe import BOARD, generate_board, print_board, game_loop
+from tic_tac_toe import BOARD, generate_board, print_board, game_loop, swap_users, check_if_move_invalid, \
+    detect_board_full
 
 
 class TestTicTacToe(TestCase):
-    board = BOARD.copy()
-    generated_board = [f"{board['tL']}|{board['tL']}|{board['tL']}",
-                       '-+-+-',
-                       f"{board['tL']}|{board['tL']}|{board['tL']}",
-                       '-+-+-',
-                       f"{board['tL']}|{board['tL']}|{board['tL']}"]
-    printed_board = ' | | \n-+-+-\n | | \n-+-+-\n | | \n'
 
     def setUp(self) -> None:
-        pass
+        self.board = BOARD.copy()
+        self.generated_board = [f"{self.board['tL']}|{self.board['tL']}|{self.board['tL']}",
+                                '-+-+-',
+                                f"{self.board['tL']}|{self.board['tL']}|{self.board['tL']}",
+                                '-+-+-',
+                                f"{self.board['tL']}|{self.board['tL']}|{self.board['tL']}"]
+        self.printed_board = ' | | \n-+-+-\n | | \n-+-+-\n | | \n'
 
     def test_create_empty_board(self):
         self.assertEqual(self.generated_board, list(generate_board(self.board)))
@@ -83,3 +83,59 @@ class TestTicTacToe(TestCase):
                 pass
             value = f.getvalue()
         self.assertEqual('Invalid move! Please use one of the values hinted below.', value.split('\n')[-8])
+
+
+class FunctionsTest(TestCase):
+
+    def setUp(self) -> None:
+        self.board = BOARD.copy()
+
+    def test_swap_users_function_swaps_correctly(self):
+        user = 'X'
+        user = swap_users(user)
+        self.assertEqual(user, 'O')
+        user = swap_users(user)
+        self.assertEqual(user, 'X')
+
+    def test_detect_board_full_passes_board_empty(self):
+        check, message = detect_board_full(self.board)
+        self.assertEqual(check, False)
+        self.assertEqual(message, None)
+
+    def test_detect_board_full_passes_board_not_empty_bot_not_full(self):
+        board = self.board.copy()
+        for key in ('tL', 'mM', 'mR', 'bL'):
+            board[key] = 'X'
+        check, message = detect_board_full(board)
+        self.assertEqual(check, False)
+        self.assertEqual(message, None)
+
+    def test_detect_board_full_detects_full_board(self):
+        board = self.board.copy()
+        for key in board:
+            board[key] = 'X'
+        check, message = detect_board_full(board)
+        self.assertEqual(check, True)
+        self.assertEqual(message, "There is no winner!")
+
+    def test_invalid_move_recognizes_invalid_move(self):
+        move = 'tB'
+        check, message = check_if_move_invalid(move, self.board)
+        self.assertEqual(check, True)
+        self.assertEqual(message, 'Invalid move! Please use one of the values hinted below.')
+
+    def test_invalid_move_passes_valid_move(self):
+        move = 'tR'
+        check, message = check_if_move_invalid(move, self.board)
+        self.assertEqual(check, False)
+        self.assertEqual(message, None)
+
+    def test_invalid_move_recognizes_occupied_move(self):
+        board = self.board.copy()
+        board['tL'] = 'X'
+        move = 'tL'
+        check, message = check_if_move_invalid(move, board)
+        self.assertEqual(check, True)
+        self.assertEqual(message, 'Invalid move! This place is taken, try another one.')
+
+
