@@ -4,13 +4,11 @@ def create_empty_board():
         'mL': ' ', 'mM': ' ', 'mR': ' ',
         'bL': ' ', 'bM': ' ', 'bR': ' ',
     }
-    return [
-        f"{board['tL']}|{board['tM']}|{board['tR']}",
-        '-+-+-',
-        f"{board['mL']}|{board['mM']}|{board['mR']}",
-        '-+-+-',
-        f"{board['bL']}|{board['bM']}|{board['bR']}"
-    ]
+    yield f"{board['tL']}|{board['tM']}|{board['tR']}"
+    yield '-+-+-'
+    yield f"{board['mL']}|{board['mM']}|{board['mR']}"
+    yield '-+-+-'
+    yield f"{board['bL']}|{board['bM']}|{board['bR']}"
 
 
 def print_board(board):

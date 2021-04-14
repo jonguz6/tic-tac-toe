@@ -10,7 +10,7 @@ class TestTicTacToe(TestCase):
         self.board = [' | | ', '-+-+-', ' | | ', '-+-+-', ' | | ']
 
     def test_create_empty_board(self):
-        self.assertEqual(self.board, create_empty_board())
+        self.assertEqual(self.board, list(create_empty_board()))
 
     @patch('sys.stdout', new_callable=io.StringIO)
     def test_print_empty_board(self, mock_out):
