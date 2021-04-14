@@ -36,7 +36,8 @@ class TestTicTacToe(TestCase):
             except EOFError:
                 pass
             value = f.getvalue()
-        self.assertEqual(one_input_board, value.split('\n')[6:11])
+            value = [y for y in value.split('\n') if y != '']
+        self.assertEqual(one_input_board, value[7:12])
 
     @patch('sys.stdin', io.StringIO('n\ntR\ntL'))
     def test_game_loop_takes_two_inputs(self):
@@ -48,7 +49,8 @@ class TestTicTacToe(TestCase):
             except EOFError:
                 pass
             value = f.getvalue()
-        self.assertEqual(two_input_board, value.split('\n')[12:17])
+            value = [y for y in value.split('\n') if y != '']
+        self.assertEqual(two_input_board, value[13:18])
 
     @patch('sys.stdin', io.StringIO('n\ntL\ntM\ntR\nmM\nmL\nmR\nbM\nbL\nbR'))
     def test_game_loop_detects_boar_is_full(self):
@@ -60,8 +62,9 @@ class TestTicTacToe(TestCase):
             except EOFError:
                 pass
             value = f.getvalue()
-        self.assertEqual(full_board, value.split('\n')[54:59])
-        self.assertEqual("There is no winner!", value.split('\n')[-2])
+            value = [y for y in value.split('\n') if y != '']
+        self.assertEqual(full_board, value[55:60])
+        self.assertEqual("There is no winner!", value[-1])
 
     @patch('sys.stdin', io.StringIO('n\ntL\ntL'))
     def test_game_loop_detects_move_on_occupied_cell(self):
@@ -72,7 +75,8 @@ class TestTicTacToe(TestCase):
             except EOFError:
                 pass
             value = f.getvalue()
-        self.assertEqual('Invalid move! This place is taken, try another one.', value.split('\n')[-8])
+            value = [y for y in value.split('\n') if y != '']
+        self.assertEqual('Invalid move! This place is taken, try another one.', value[-7])
 
     @patch('sys.stdin', io.StringIO('n\ntB'))
     def test_game_loop_detects_move_invalid(self):
@@ -83,7 +87,8 @@ class TestTicTacToe(TestCase):
             except EOFError:
                 pass
             value = f.getvalue()
-        self.assertEqual('Invalid move! Please use one of the values hinted below.', value.split('\n')[-8])
+            value = [y for y in value.split('\n') if y != '']
+        self.assertEqual('Invalid move! Please use one of the values hinted below.', value[-7])
 
     @patch('sys.stdin', io.StringIO('n\ntL\nbL\ntM\nbM\ntR'))
     def test_game_loop_detects_winner(self):
@@ -94,7 +99,8 @@ class TestTicTacToe(TestCase):
             except EOFError:
                 pass
             value = f.getvalue()
-        self.assertEqual('Congratulations! The winner is X!', value.split('\n')[-2])
+            value = [y for y in value.split('\n') if y != '']
+        self.assertEqual('Congratulations! The winner is X!', value[-1])
 
     @patch('sys.stdin', io.StringIO('n\nmM\ntR\nmR\nmL\nbM\ntM\ntL\nbL\nbR'))
     def test_game_loop_detects_winner_second_scenario(self):
@@ -105,7 +111,8 @@ class TestTicTacToe(TestCase):
             except EOFError:
                 pass
             value = f.getvalue()
-        self.assertEqual('Congratulations! The winner is X!', value.split('\n')[-2])
+            value = [y for y in value.split('\n') if y != '']
+        self.assertEqual('Congratulations! The winner is X!', value[-1])
 
     @patch('sys.stdin', io.StringIO('n\nmL\nmM\nbM\nbL\ntR\nbR\ntM\ntL'))
     def test_game_loop_detects_winner_third_scenario(self):
@@ -116,7 +123,8 @@ class TestTicTacToe(TestCase):
             except EOFError:
                 pass
             value = f.getvalue()
-        self.assertEqual('Congratulations! The winner is O!', value.split('\n')[-2])
+            value = [y for y in value.split('\n') if y != '']
+        self.assertEqual('Congratulations! The winner is O!', value[-1])
 
     @patch('sys.stdin', io.StringIO('y\n9'))
     def test_game_loop_takes_input_with_numpad(self):
@@ -128,7 +136,8 @@ class TestTicTacToe(TestCase):
             except EOFError:
                 pass
             value = f.getvalue()
-        self.assertEqual(one_input_board, value.split('\n')[6:11])
+            value = [y for y in value.split('\n') if y != '']
+        self.assertEqual(one_input_board, value[7:12])
 
     @patch('sys.stdin', io.StringIO('y\n9\n7'))
     def test_game_loop_takes_two_inputs_with_numpad(self):
@@ -140,7 +149,8 @@ class TestTicTacToe(TestCase):
             except EOFError:
                 pass
             value = f.getvalue()
-        self.assertEqual(two_input_board, value.split('\n')[12:17])
+            value = [y for y in value.split('\n') if y != '']
+        self.assertEqual(two_input_board, value[13:18])
 
 
 class FunctionsTest(TestCase):
