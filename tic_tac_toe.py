@@ -18,6 +18,14 @@ def print_board(board):
         print(line)
 
 
+def swap_users(user):
+    if user == 'X':
+        user = 'O'
+    else:
+        user = 'X'
+    return user
+
+
 def game_loop(board):
     game_board = board.copy()
     user = 'X'
@@ -28,10 +36,7 @@ def game_loop(board):
         move = input("What is your move? (tL, tM, tR, mL, mM, mR, bL, bM, bR)\n")
         game_board[move] = user
 
-        if user == 'X':
-            user = 'O'
-        else:
-            user = 'X'
+        user = swap_users(user)
 
 
 if __name__ == '__main__':
