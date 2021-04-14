@@ -3,6 +3,11 @@ BOARD = {
     'mL': ' ', 'mM': ' ', 'mR': ' ',
     'bL': ' ', 'bM': ' ', 'bR': ' ',
 }
+NUMPAD = {
+    7: 'tL', 8: 'tM', 9: 'tR',
+    4: 'mL', 5: 'mM', 6: 'mR',
+    1: 'bL', 2: 'bM', 3: 'bR'
+}
 
 
 def generate_board(board):
@@ -75,6 +80,12 @@ def check_for_winner(board):
 def game_loop(board):
     game_board = board.copy()
     user = 'X'
+    numpad = input("Do you want to play with a numpad/numerical keys? (Y/n)")
+    if numpad.lower() == 'y' or numpad == '':
+        numpad = True
+    else:
+        numpad = True
+
     while True:
         generated_board = generate_board(game_board)
         print_board(generated_board)
@@ -90,7 +101,8 @@ def game_loop(board):
             break
 
         move = input("What is your move? (tL, tM, tR, mL, mM, mR, bL, bM, bR)\n")
-
+        if numpad:
+            move = NUMPAD[int(move)]
         invalid_move = check_if_move_invalid(move, game_board)
         if invalid_move[0]:
             print(invalid_move[1])
