@@ -84,6 +84,17 @@ def check_for_numpad():
     return False
 
 
+def translate_num_to_dict_key(number, trans_table=None):
+    number = int(number)
+    if trans_table is None:
+        trans_table = NUMPAD
+    try:
+        result = trans_table[number]
+    except KeyError:
+        result = None
+    return result
+
+
 def game_loop(board):
     game_board = board.copy()
     user = 'X'
@@ -105,7 +116,7 @@ def game_loop(board):
 
         move = input("What is your move? (tL, tM, tR, mL, mM, mR, bL, bM, bR)\n")
         if numpad:
-            move = NUMPAD[int(move)]
+            move = translate_num_to_dict_key(move)
         invalid_move = check_if_move_invalid(move, game_board)
         if invalid_move[0]:
             print(invalid_move[1])
