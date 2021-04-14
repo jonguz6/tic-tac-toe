@@ -3,7 +3,7 @@ from unittest import TestCase
 from unittest.mock import patch
 
 from tic_tac_toe import BOARD, generate_board, print_board, game_loop, swap_users, check_if_move_invalid, \
-    detect_board_full
+    detect_board_full, check_if_three_values_are_the_same
 
 
 class TestTicTacToe(TestCase):
@@ -170,5 +170,30 @@ class FunctionsTest(TestCase):
         check, message = check_if_move_invalid(move, board)
         self.assertEqual(check, True)
         self.assertEqual(message, 'Invalid move! This place is taken, try another one.')
+        
+    def test_check_if_three_values_are_the_same_with_valid(self):
+        x, y, z = 1, 1, 1
+        self.assertTrue(check_if_three_values_are_the_same(x, y, z))
+
+    def test_check_if_three_values_are_the_same_with_one_invalid(self):
+        x, y, z = 2, 1, 1
+        self.assertFalse(check_if_three_values_are_the_same(x, y, z))
+
+    def test_check_if_three_values_are_the_same_with_two_invalid(self):
+        x, y, z = 2, 3, 1
+        self.assertFalse(check_if_three_values_are_the_same(x, y, z))
+
+    def test_check_if_three_values_are_the_same_with_one_empty(self):
+        x, y, z = 2, 3, ' '
+        self.assertFalse(check_if_three_values_are_the_same(x, y, z))
+
+    def test_check_if_three_values_are_the_same_with_two_empty(self):
+        x, y, z = 2, ' ', ' '
+        self.assertFalse(check_if_three_values_are_the_same(x, y, z))
+
+    def test_check_if_three_values_are_the_same_with_all_empty(self):
+        x, y, z = ' ', ' ', ' '
+        self.assertFalse(check_if_three_values_are_the_same(x, y, z))
+
 
 
