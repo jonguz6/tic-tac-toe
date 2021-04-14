@@ -1,9 +1,11 @@
-def create_empty_board():
-    board = {
-        'tL': ' ', 'tM': ' ', 'tR': ' ',
-        'mL': ' ', 'mM': ' ', 'mR': ' ',
-        'bL': ' ', 'bM': ' ', 'bR': ' ',
-    }
+BOARD = {
+    'tL': ' ', 'tM': ' ', 'tR': ' ',
+    'mL': ' ', 'mM': ' ', 'mR': ' ',
+    'bL': ' ', 'bM': ' ', 'bR': ' ',
+}
+
+
+def generate_board(board):
     yield f"{board['tL']}|{board['tM']}|{board['tR']}"
     yield '-+-+-'
     yield f"{board['mL']}|{board['mM']}|{board['mR']}"
@@ -16,6 +18,9 @@ def print_board(board):
         print(line)
 
 
+def game_loop(board):
+    pass
+
+
 if __name__ == '__main__':
-    game_board = create_empty_board()
-    print_board(game_board)
+    game_loop(BOARD)
