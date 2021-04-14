@@ -77,9 +77,8 @@ def check_for_winner(board):
     return False, None
 
 
-def check_for_numpad():
-    numpad = input("Do you want to play with a numpad/numerical keys? (Y/n)")
-    if numpad.lower() == 'y' or numpad == '':
+def check_for_numpad(choice):
+    if choice.lower() == 'y' or choice == '':
         return True
     return False
 
@@ -98,7 +97,8 @@ def translate_num_to_dict_key(number, trans_table=None):
 def game_loop(board):
     game_board = board.copy()
     user = 'X'
-    numpad = check_for_numpad()
+    numpad = input("Do you want to play with a numpad/numerical keys? (Y/n)")
+    numpad = check_for_numpad(numpad)
 
     while True:
         generated_board = generate_board(game_board)
