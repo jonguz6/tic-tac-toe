@@ -26,6 +26,12 @@ def swap_users(user):
     return user
 
 
+def detect_board_full(board):
+    if ' ' not in board.values():
+        return True, 'There is no winner!'
+    return False, None
+
+
 def game_loop(board):
     game_board = board.copy()
     user = 'X'
@@ -33,8 +39,9 @@ def game_loop(board):
         generated_board = generate_board(game_board)
         print_board(generated_board)
 
-        if ' ' not in game_board.values():
-            print("There is no winner!")
+        board_full = detect_board_full(game_board)
+        if board_full[0]:
+            print(board_full[1])
             break
 
         move = input("What is your move? (tL, tM, tR, mL, mM, mR, bL, bM, bR)\n")
