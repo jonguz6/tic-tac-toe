@@ -104,6 +104,7 @@ def game_loop(board):
     numpad = check_for_numpad(numpad)
 
     while True:
+        print(f"{user} now goes:")
         generated_board = generate_board(game_board)
         print_board(generated_board)
 
