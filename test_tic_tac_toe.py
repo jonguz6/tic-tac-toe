@@ -3,7 +3,8 @@ from unittest import TestCase
 from unittest.mock import patch
 
 from tic_tac_toe import BOARD, generate_board, print_board, game_loop, swap_users, check_if_move_invalid, \
-    detect_board_full, check_if_three_values_are_the_same, check_for_winner
+    detect_board_full, check_if_three_values_are_the_same, check_for_winner, check_for_numpad, \
+    translate_num_to_dict_key, NUMPAD
 
 
 class TestTicTacToe(TestCase):
@@ -25,7 +26,7 @@ class TestTicTacToe(TestCase):
         print_board(self.generated_board)
         self.assertEqual(self.printed_board, mock_out.getvalue())
 
-    @patch('sys.stdin', io.StringIO('tR'))
+    @patch('sys.stdin', io.StringIO('n\ntR'))
     def test_game_loop_takes_one_input(self):
         board = self.board.copy()
         one_input_board = [' | |X', '-+-+-', ' | | ', '-+-+-', ' | | ']
@@ -37,7 +38,7 @@ class TestTicTacToe(TestCase):
             value = f.getvalue()
         self.assertEqual(one_input_board, value.split('\n')[6:11])
 
-    @patch('sys.stdin', io.StringIO('tR\ntL'))
+    @patch('sys.stdin', io.StringIO('n\ntR\ntL'))
     def test_game_loop_takes_two_inputs(self):
         board = self.board.copy()
         two_input_board = ['O| |X', '-+-+-', ' | | ', '-+-+-', ' | | ']
@@ -49,7 +50,7 @@ class TestTicTacToe(TestCase):
             value = f.getvalue()
         self.assertEqual(two_input_board, value.split('\n')[12:17])
 
-    @patch('sys.stdin', io.StringIO('tL\ntM\ntR\nmM\nmL\nmR\nbM\nbL\nbR'))
+    @patch('sys.stdin', io.StringIO('n\ntL\ntM\ntR\nmM\nmL\nmR\nbM\nbL\nbR'))
     def test_game_loop_detects_boar_is_full(self):
         board = self.board.copy()
         full_board = ['X|O|X', '-+-+-', 'X|O|O', '-+-+-', 'O|X|X']
@@ -62,7 +63,7 @@ class TestTicTacToe(TestCase):
         self.assertEqual(full_board, value.split('\n')[54:59])
         self.assertEqual("There is no winner!", value.split('\n')[-2])
 
-    @patch('sys.stdin', io.StringIO('tL\ntL'))
+    @patch('sys.stdin', io.StringIO('n\ntL\ntL'))
     def test_game_loop_detects_move_on_occupied_cell(self):
         board = self.board.copy()
         with patch('sys.stdout', new_callable=io.StringIO) as f:
@@ -73,7 +74,7 @@ class TestTicTacToe(TestCase):
             value = f.getvalue()
         self.assertEqual('Invalid move! This place is taken, try another one.', value.split('\n')[-8])
 
-    @patch('sys.stdin', io.StringIO('tB'))
+    @patch('sys.stdin', io.StringIO('n\ntB'))
     def test_game_loop_detects_move_invalid(self):
         board = self.board.copy()
         with patch('sys.stdout', new_callable=io.StringIO) as f:
@@ -84,7 +85,7 @@ class TestTicTacToe(TestCase):
             value = f.getvalue()
         self.assertEqual('Invalid move! Please use one of the values hinted below.', value.split('\n')[-8])
 
-    @patch('sys.stdin', io.StringIO('tL\nbL\ntM\nbM\ntR'))
+    @patch('sys.stdin', io.StringIO('n\ntL\nbL\ntM\nbM\ntR'))
     def test_game_loop_detects_winner(self):
         board = self.board.copy()
         with patch('sys.stdout', new_callable=io.StringIO) as f:
@@ -95,7 +96,7 @@ class TestTicTacToe(TestCase):
             value = f.getvalue()
         self.assertEqual('Congratulations! The winner is X!', value.split('\n')[-2])
 
-    @patch('sys.stdin', io.StringIO('mM\ntR\nmR\nmL\nbM\ntM\ntL\nbL\nbR'))
+    @patch('sys.stdin', io.StringIO('n\nmM\ntR\nmR\nmL\nbM\ntM\ntL\nbL\nbR'))
     def test_game_loop_detects_winner_second_scenario(self):
         board = self.board.copy()
         with patch('sys.stdout', new_callable=io.StringIO) as f:
@@ -106,7 +107,7 @@ class TestTicTacToe(TestCase):
             value = f.getvalue()
         self.assertEqual('Congratulations! The winner is X!', value.split('\n')[-2])
 
-    @patch('sys.stdin', io.StringIO('mL\nmM\nbM\nbL\ntR\nbR\ntM\ntL'))
+    @patch('sys.stdin', io.StringIO('n\nmL\nmM\nbM\nbL\ntR\nbR\ntM\ntL'))
     def test_game_loop_detects_winner_third_scenario(self):
         board = self.board.copy()
         with patch('sys.stdout', new_callable=io.StringIO) as f:
@@ -117,11 +118,36 @@ class TestTicTacToe(TestCase):
             value = f.getvalue()
         self.assertEqual('Congratulations! The winner is O!', value.split('\n')[-2])
 
+    @patch('sys.stdin', io.StringIO('y\n9'))
+    def test_game_loop_takes_input_with_numpad(self):
+        board = self.board.copy()
+        one_input_board = [' | |X', '-+-+-', ' | | ', '-+-+-', ' | | ']
+        with patch('sys.stdout', new_callable=io.StringIO) as f:
+            try:
+                game_loop(board)
+            except EOFError:
+                pass
+            value = f.getvalue()
+        self.assertEqual(one_input_board, value.split('\n')[6:11])
+
+    @patch('sys.stdin', io.StringIO('y\n9\n7'))
+    def test_game_loop_takes_two_inputs_with_numpad(self):
+        board = self.board.copy()
+        two_input_board = ['O| |X', '-+-+-', ' | | ', '-+-+-', ' | | ']
+        with patch('sys.stdout', new_callable=io.StringIO) as f:
+            try:
+                game_loop(board)
+            except EOFError:
+                pass
+            value = f.getvalue()
+        self.assertEqual(two_input_board, value.split('\n')[12:17])
+
 
 class FunctionsTest(TestCase):
 
     def setUp(self) -> None:
         self.board = BOARD.copy()
+        self.NUMPAD = NUMPAD.copy()
 
     def test_swap_users_function_swaps_correctly(self):
         user = 'X'
@@ -222,5 +248,31 @@ class FunctionsTest(TestCase):
         self.assertTrue(check)
         self.assertEqual(winner, 'O')
 
+    def test_check_for_numpad_no_input(self):
+        result = check_for_numpad('')
+        self.assertTrue(result)
 
+    def test_check_for_numpad_lowercase_y(self):
+        result = check_for_numpad('y')
+        self.assertTrue(result)
+
+    def test_check_for_numpad_uppercase_Y(self):
+        result = check_for_numpad('Y')
+        self.assertTrue(result)
+
+    def test_check_for_numpad_lowercase_n(self):
+        result = check_for_numpad('n')
+        self.assertFalse(result)
+
+    def test_check_for_numpad_random_input(self):
+        result = check_for_numpad('gdasfgertsgh')
+        self.assertFalse(result)
+
+    def test_translate_num_to_dict_key_with_good_input(self):
+        result = translate_num_to_dict_key(9, self.NUMPAD)
+        self.assertEqual(result, 'tR')
+
+    def test_translate_num_to_dict_key_with_bad_input(self):
+        result = translate_num_to_dict_key('y', self.NUMPAD)
+        self.assertEqual(result, None)
 

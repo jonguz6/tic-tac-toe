@@ -3,6 +3,11 @@ BOARD = {
     'mL': ' ', 'mM': ' ', 'mR': ' ',
     'bL': ' ', 'bM': ' ', 'bR': ' ',
 }
+NUMPAD = {
+    7: 'tL', 8: 'tM', 9: 'tR',
+    4: 'mL', 5: 'mM', 6: 'mR',
+    1: 'bL', 2: 'bM', 3: 'bR'
+}
 
 
 def generate_board(board):
@@ -72,9 +77,32 @@ def check_for_winner(board):
     return False, None
 
 
+def check_for_numpad(choice):
+    if choice.lower() == 'y' or choice == '':
+        return True
+    return False
+
+
+def translate_num_to_dict_key(number, trans_table=None):
+    try:
+        number = int(number)
+    except ValueError:
+        return None
+    if trans_table is None:
+        trans_table = NUMPAD
+    try:
+        result = trans_table[number]
+    except KeyError:
+        result = None
+    return result
+
+
 def game_loop(board):
     game_board = board.copy()
     user = 'X'
+    numpad = input("Do you want to play with a numpad/numerical keys? (Y/n)")
+    numpad = check_for_numpad(numpad)
+
     while True:
         generated_board = generate_board(game_board)
         print_board(generated_board)
@@ -88,9 +116,13 @@ def game_loop(board):
         if board_full[0]:
             print(board_full[1])
             break
+        hints = 'tL, tM, tR, mL, mM, mR, bL, bM, bR'
+        if numpad:
+            hints = 'use numpad/numerical keys'
 
-        move = input("What is your move? (tL, tM, tR, mL, mM, mR, bL, bM, bR)\n")
-
+        move = input(f"What is your move? ({hints})\n")
+        if numpad:
+            move = translate_num_to_dict_key(move)
         invalid_move = check_if_move_invalid(move, game_board)
         if invalid_move[0]:
             print(invalid_move[1])
