@@ -84,7 +84,10 @@ def check_for_numpad(choice):
 
 
 def translate_num_to_dict_key(number, trans_table=None):
-    number = int(number)
+    try:
+        number = int(number)
+    except ValueError:
+        return None
     if trans_table is None:
         trans_table = NUMPAD
     try:
@@ -113,8 +116,11 @@ def game_loop(board):
         if board_full[0]:
             print(board_full[1])
             break
+        hints = 'tL, tM, tR, mL, mM, mR, bL, bM, bR'
+        if numpad:
+            hints = 'use numpad/numerical keys'
 
-        move = input("What is your move? (tL, tM, tR, mL, mM, mR, bL, bM, bR)\n")
+        move = input(f"What is your move? ({hints})\n")
         if numpad:
             move = translate_num_to_dict_key(move)
         invalid_move = check_if_move_invalid(move, game_board)
